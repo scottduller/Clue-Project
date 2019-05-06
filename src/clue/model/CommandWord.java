@@ -7,7 +7,8 @@ public enum CommandWord {
     TELEPORT("teleport"), //Move to a location (no limits)
     ENTER("enter"), //Enter a room
     QUIT("quit"), //Exit Game
-    UNKNOWN("unknown");
+    UNKNOWN("unknown"),
+    TURN("turn");
 
     public String word;
 

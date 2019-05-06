@@ -18,7 +18,7 @@ public class Command {
         this.message = message;
     }
 
-    // roll
+    // roll/turn
     public Command(CommandWord command) {
         this.command = command;
     }

@@ -4,31 +4,31 @@ import clue.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 public class Grid {
     private static final int V_SIZE = 25;
     private static final int H_SIZE = 24;
-    private final Coordinate[] nullSpots = new Coordinate[]{new Coordinate(0, 8), new Coordinate(0, 15), new Coordinate(6, 23), new Coordinate(8, 23),
+    private static final Room rooms = new Room();
+    private final Coordinate[] nullSpots = {new Coordinate(0, 8), new Coordinate(0, 15), new Coordinate(6, 23), new Coordinate(8, 23),
             new Coordinate(16, 23), new Coordinate(4, 0), new Coordinate(11, 0), new Coordinate(17, 0),
             new Coordinate(23, 6), new Coordinate(24, 6), new Coordinate(24, 7), new Coordinate(24, 8),
             new Coordinate(23, 17), new Coordinate(24, 17), new Coordinate(24, 16), new Coordinate(24, 15)};
-    private final Coordinate[] playerSpots = new Coordinate[]{new Coordinate(15, 16), new Coordinate(15, 17), new Coordinate(15, 18), new Coordinate(6, 6),
+    private final Coordinate[] playerSpots = {new Coordinate(15, 16), new Coordinate(15, 17), new Coordinate(15, 18), new Coordinate(6, 6),
             new Coordinate(10, 6), new Coordinate(19, 5), new Coordinate(23, 8), new Coordinate(23, 9),
             new Coordinate(24, 9), new Coordinate(23, 15), new Coordinate(23, 14), new Coordinate(24, 14)};
-    private final Coordinate[] startSpots = new Coordinate[]{new Coordinate(5, 0), new Coordinate(18, 0),
+    private final Tile[][] grid = new Tile[V_SIZE][H_SIZE];
+    private final Coordinate[] startSpots = {new Coordinate(5, 0), new Coordinate(18, 0),
             new Coordinate(24, 9), new Coordinate(24, 14),
             new Coordinate(0, 16), new Coordinate(7, 23)};
-    private final Tile[][] grid = new Tile[V_SIZE][H_SIZE];
-    private final Room rooms = new Room();
     private int currentRow = 0;
     private int currentCol = 0;
-    private int currentRoll;
     private Player[] players;
+    private int playerNum;
 
 
-    public Grid(Player[] players) {
+    public Grid(Player[] players, int playerNum) {
         this.players = players;
+        this.playerNum = playerNum;
         for (int row = 0; row < V_SIZE; row++) {
             for (int col = 0; col < H_SIZE; col++) {
                 grid[row][col] = new Tile(row, col, false);
@@ -73,7 +73,10 @@ public class Grid {
                 }
             }
         }
-        this.initPlayerLoc(players);
+        for (int i = 0; i < playerNum; i++) {
+            Room.addRoomWeapon();
+        }
+        this.initPlayerLoc();
     }
 
     public static int getvSize() {
@@ -94,11 +97,6 @@ public class Grid {
             return this.getTile(coordinate).setPlayer(player);
         }
         return false;
-    }
-
-    public int roll() {
-        Random rand = new Random();
-        return rand.nextInt(6) + 1;
     }
 
     public ArrayList<Coordinate> movePositions(int moves, int row, int col) {
@@ -146,20 +144,42 @@ public class Grid {
                 !this.getGrid()[coordinate.getRow()][coordinate.getCol()].hasPlayer();
     }
 
-    public void initPlayerLoc(Player[] player) {
+    public void initPlayerLoc() {
         ArrayList<Coordinate> starts = new ArrayList<>();
         for (Coordinate c : startSpots) {
             starts.add(c);
         }
         Collections.shuffle(starts);
-
-        for (Player p : player) {
-            Coordinate c = starts.remove(0);
-            p.setCoordinate(c);
-            getGrid()[c.getRow()][c.getCol()].setPlayer(p);
-            players = player;
+        int roomPTR = 0;
+        for (Player p : players) {
+            if (p.getPlaying()) {
+                Coordinate c = starts.remove(0);
+                p.setCoordinate(c);
+                getGrid()[c.getRow()][c.getCol()].setPlayer(p);
+            } else {
+                Coordinate c = Room.getNonPlayers().get(clue.model.card.Room.values()[roomPTR]);
+                p.setCoordinate(c);
+                getGrid()[c.getRow()][c.getCol()].setPlayer(p);
+                roomPTR++;
+            }
         }
 
+    }
+
+    public Player[] getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Player[] players) {
+        this.players = players;
+    }
+
+    public int getPlayerNum() {
+        return playerNum;
+    }
+
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
     }
 
     public Tile getTile(Coordinate coordinate) {
@@ -182,7 +202,7 @@ public class Grid {
         return startSpots;
     }
 
-    public Room getRooms() {
+    public clue.model.board.Room getRooms() {
         return rooms;
     }
 
@@ -200,14 +220,6 @@ public class Grid {
 
     public void setCurrentCol(int currentCol) {
         this.currentCol = currentCol;
-    }
-
-    private int getCurrentRoll() {
-        return currentRoll;
-    }
-
-    public void setCurrentRoll(int currentRoll) {
-        this.currentRoll = currentRoll;
     }
 
     @Override

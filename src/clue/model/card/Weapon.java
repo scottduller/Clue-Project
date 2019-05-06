@@ -1,13 +1,12 @@
 package clue.model.card;
 
 public enum Weapon implements CardType {
+    DAGGER("Dagger"),
     CANDLESTICK("Candlestick"),
     REVOLVER("Revolver"),
-    KNIFE("Knife"),
-    LEAD("Lead"),
-    PIPE("Pipe"),
+    LEAD_PIPE("Lead Pipe"),
     ROPE("Rope"),
-    WRENCH("Wrench");
+    SPANNER("Spanner");
 
     private String weapon;
 

@@ -1,4 +1,4 @@
 package clue.model.card;
 
-interface CardType {
+public interface CardType {
 }

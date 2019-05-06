@@ -14,7 +14,7 @@
             <children>
                 <ImageView fitHeight="547.0" fitWidth="350.0" layoutX="510.0" layoutY="10.0" preserveRatio="true">
                     <image>
-                        <Image url="@../../image/MenuDice.png"/>
+                        <Image url="@../../image/menu/MenuDice.png"/>
                     </image>
                 </ImageView>
                 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
@@ -22,7 +22,7 @@
                     <children>
                         <ImageView fitHeight="202.0" fitWidth="468.0">
                             <image>
-                                <Image url="@../../image/ClueLogo.png"/>
+                                <Image url="@../../image/menu/ClueLogo.png"/>
                             </image>
                         </ImageView>
                         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0"
@@ -64,7 +64,7 @@
                         <Insets/>
                     </HBox.margin>
                     <image>
-                        <Image url="@../../image/MenuDice.png"/>
+                        <Image url="@../../image/menu/MenuDice.png"/>
                     </image>
                 </ImageView>
             </children>

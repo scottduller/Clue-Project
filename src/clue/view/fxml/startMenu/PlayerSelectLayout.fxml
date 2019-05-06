@@ -148,7 +148,7 @@
                     <children>
                         <ImageView fitHeight="200.0" fitWidth="141.0">
                             <image>
-                                <Image url="@../../image/cards/missscarlettp.png"/>
+                                <Image url="@../../image/cards/characters/missscarlettp.png"/>
                             </image>
                         </ImageView>
                         <HBox alignment="TOP_CENTER">
@@ -171,7 +171,7 @@
                     <children>
                         <ImageView fitHeight="200.0" fitWidth="141.0">
                             <image>
-                                <Image url="@../../image/cards/colmustardp.png"/>
+                                <Image url="@../../image/cards/characters/colmustardp.png"/>
                             </image>
                         </ImageView>
                         <HBox alignment="TOP_CENTER">
@@ -194,7 +194,7 @@
                     <children>
                         <ImageView fitHeight="200.0" fitWidth="141.0">
                             <image>
-                                <Image url="@../../image/cards/mrspeacockp.png"/>
+                                <Image url="@../../image/cards/characters/mrspeacockp.png"/>
                             </image>
                         </ImageView>
                         <HBox alignment="TOP_CENTER">
@@ -217,7 +217,7 @@
                     <children>
                         <ImageView fitHeight="200.0" fitWidth="141.0">
                             <image>
-                                <Image url="@../../image/cards/profplump.png"/>
+                                <Image url="@../../image/cards/characters/profplump.png"/>
                             </image>
                         </ImageView>
                         <HBox alignment="TOP_CENTER">
@@ -241,7 +241,7 @@
                     <children>
                         <ImageView fitHeight="200.0" fitWidth="141.0">
                             <image>
-                                <Image url="@../../image/cards/revgreenp.png"/>
+                                <Image url="@../../image/cards/characters/revgreenp.png"/>
                             </image>
                         </ImageView>
                         <HBox alignment="TOP_CENTER">
@@ -265,7 +265,7 @@
                     <children>
                         <ImageView fitHeight="200.0" fitWidth="141.0">
                             <image>
-                                <Image url="@../../image/cards/mrswhitep.png"/>
+                                <Image url="@../../image/cards/characters/mrswhitep.png"/>
                             </image>
                         </ImageView>
                         <HBox alignment="TOP_CENTER">

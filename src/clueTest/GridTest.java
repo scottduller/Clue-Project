@@ -47,11 +47,11 @@ public class GridTest {
     @Before
     public void setUp() throws Exception {
         p = new Player[]{
-                new Player("1", CharacterCard.MISS_SCARLET.toString()), new Player("2", CharacterCard.MRS_PEACOCK.toString()),
-                new Player("3", CharacterCard.COLONEL_MUSTARD.toString()), new Player("4", CharacterCard.MRS_WHITE.toString()),
-                new Player("4", CharacterCard.MR_GREEN.toString()), new Player("6", CharacterCard.PROFESSOR_PLUM.toString())
+                new Player("1", CharacterCard.MISS_SCARLET.toString(), true), new Player("2", CharacterCard.MRS_PEACOCK.toString(), true),
+                new Player("3", CharacterCard.COLONEL_MUSTARD.toString(), true), new Player("4", CharacterCard.MRS_WHITE.toString(), false),
+                new Player("4", CharacterCard.MR_GREEN.toString(), false), new Player("6", CharacterCard.PROFESSOR_PLUM.toString(), false)
         };
-        g = new Grid(p);
+        g = new Grid(p, 6);
     }
 
     @After

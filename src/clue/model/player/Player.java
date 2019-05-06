@@ -1,16 +1,20 @@
 package clue.model.player;
 
 import clue.model.board.Coordinate;
+import clue.model.card.CardType;
 import clue.model.card.CharacterCard;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Player {
     private final String name;
     private Coordinate coordinate;
     private CharacterCard character;
+    private Boolean playing;
+    private ArrayList<CardType> cardHand = new ArrayList<>();
 
-    public Player(String name, String character) {
+    public Player(String name, String character, Boolean playing) {
         this.name = name;
         for (CharacterCard c : CharacterCard.values()) {
             if (c.toString() == character) {
@@ -18,6 +22,20 @@ public class Player {
                 break;
             }
         }
+        this.playing = playing;
+    }
+
+
+    public void addCard(CardType card) {
+        cardHand.add(card);
+    }
+
+    public ArrayList<CardType> getCardHand() {
+        return cardHand;
+    }
+
+    public void setCardHand(ArrayList<CardType> cardHand) {
+        this.cardHand = cardHand;
     }
 
     public String getName() {
@@ -42,6 +60,18 @@ public class Player {
 
     public CharacterCard getCharacter() {
         return character;
+    }
+
+    public void setCharacter(CharacterCard character) {
+        this.character = character;
+    }
+
+    public Boolean getPlaying() {
+        return playing;
+    }
+
+    public void setPlaying(Boolean playing) {
+        this.playing = playing;
     }
 
     @Override

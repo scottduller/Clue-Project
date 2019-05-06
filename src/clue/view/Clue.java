@@ -4,6 +4,7 @@ import clue.model.ClueText;
 import clue.model.board.Coordinate;
 import clue.model.board.Grid;
 import clue.model.board.Tile;
+import clue.model.card.Cards;
 import clue.model.card.CharacterCard;
 import clue.model.player.Computer;
 import clue.model.player.Player;
@@ -17,9 +18,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -29,6 +32,8 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,11 +43,13 @@ public class Clue extends Application {
     private static Grid grid;
     private static Stage primaryStage;
     private static Pane rootLayout;
+    private static Player[] players = new Player[6];
     @FXML
     Button b1;
-    private Player[] players;
-    private int playerPTR = 0;
-    private ClueText clueText;
+    private Cards cards = new Cards();
+    private int playerNum = 0;
+
+
     //Start Menu
     @FXML
     private Button menuStartButton;
@@ -94,6 +101,16 @@ public class Clue extends Application {
     private Label whiteLabel;
     @FXML
     private GridPane gridView;
+    @FXML
+    private GridPane characterDetectiveNotes;
+    @FXML
+    private GridPane roomsDetectiveNotes;
+    @FXML
+    private GridPane weaponsDetectiveNotes;
+
+    private HashMap<Player, Boolean[]> roomCardState = new HashMap<>();
+    private HashMap<Player, Boolean[]> weaponCardState = new HashMap<>();
+    private HashMap<Player, Boolean[]> characterCardState = new HashMap<>();
 
     //Test
     @FXML
@@ -136,7 +153,7 @@ public class Clue extends Application {
     public void start(Stage primaryStage) {
         Clue.primaryStage = primaryStage;
         Clue.primaryStage.setTitle("Clue!");
-        Clue.primaryStage.getIcons().add(new Image("clue/view/image/ClueLogo.png"));
+        Clue.primaryStage.getIcons().add(new Image("clue/view/image/menu/ClueLogo.png"));
 
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -212,7 +229,7 @@ public class Clue extends Application {
     private void handlePlayerNoSelect() {
 
         if (playerNo.getCharacters().toString().matches("[2-6]")) {
-            players = new Player[Integer.parseInt(playerNo.getText())];
+            playerNum = Integer.parseInt(playerNo.getText());
             editableSection.setVisible(true);
             characterSelect.getItems().setAll("Colonel Mustard", "Miss Scarlet", "Professor Plum", "Mr. Green", "Mrs. White", "Mrs. Peacock");
         } else {
@@ -224,8 +241,7 @@ public class Clue extends Application {
     @FXML
     private void handlePlayerNoReset() {
         editableSection.setVisible(false);
-        players = null;
-        playerPTR = 0;
+        players = new Player[6];
         scarlettLabel.setText("");
         greenLabel.setText("");
         whiteLabel.setText("");
@@ -237,63 +253,59 @@ public class Clue extends Application {
 
     @FXML
     private void handleAddPlayer() {
-        if (playerPTR < players.length && playerName.getText() != null && characterSelect.getValue() != null) {
-            Player p;
-            if (isComputer.isSelected()) {
-                p = new Computer(playerName.getText(), characterSelect.getValue());
-            } else {
-                p = new Player(playerName.getText(), characterSelect.getValue());
-            }
-            int index = -1;
-            for (int i = 0; i < playerPTR; i++) {
-                if (playerPTR != 0 && players[i].equals(p)) {
-                    playerPTR--;
-                    index = i;
+        for (int i = 0; i < players.length; i++) {
+            if (i < playerNum && playerName.getText() != null && characterSelect.getValue() != null) {
+                Player p;
+                if (isComputer.isSelected()) {
+                    p = new Computer(playerName.getText(), characterSelect.getValue(), true);
+                } else {
+                    p = new Player(playerName.getText(), characterSelect.getValue(), true);
                 }
-            }
 
-            if (index != -1) {
-                players[index] = p;
+                for (int j = 0; j < i; j++) {
+                    if (players[j].equals(p)) {
+                        i--;
+                        players[j] = p;
+                        break;
+                    }
+                }
+
+                switch (characterSelect.getSelectionModel().getSelectedItem()) {
+                    case "Miss Scarlet":
+                        scarlettLabel.setText(playerName.getText());
+                        break;
+                    case "Mr. Green":
+                        greenLabel.setText(playerName.getText());
+                        break;
+                    case "Mrs. White":
+                        whiteLabel.setText(playerName.getText());
+                        break;
+                    case "Mrs. Peacock":
+                        peacockLabel.setText(playerName.getText());
+                        break;
+                    case "Professor Plum":
+                        plumLabel.setText(playerName.getText());
+                        break;
+                    case "Colonel Mustard":
+                        mustardLabel.setText(playerName.getText());
+                        break;
+                }
+                if (i >= playerNum) {
+                    addPlayer.setVisible(false);
+                    startGame.setVisible(true);
+                }
             } else {
-                players[playerPTR] = p;
-            }
+                if (playerName.getText() == null) {
+                    playerName.setPromptText(playerName.getPromptText() + "!!!");
+                }
+                if (characterSelect.getValue() == null) {
+                    characterSelect.setPromptText(characterSelect.getPromptText() + "!!!");
+                }
 
-            switch (characterSelect.getSelectionModel().getSelectedItem()) {
-                case "Miss Scarlet":
-                    scarlettLabel.setText(playerName.getText());
-                    break;
-                case "Mr. Green":
-                    greenLabel.setText(playerName.getText());
-                    break;
-                case "Mrs. White":
-                    whiteLabel.setText(playerName.getText());
-                    break;
-                case "Mrs. Peacock":
-                    peacockLabel.setText(playerName.getText());
-                    break;
-                case "Professor Plum":
-                    plumLabel.setText(playerName.getText());
-                    break;
-                case "Colonel Mustard":
-                    mustardLabel.setText(playerName.getText());
-                    break;
             }
-            playerPTR++;
-            if (playerPTR >= players.length) {
-                addPlayer.setVisible(false);
-                startGame.setVisible(true);
-            }
-        } else {
-            if (playerName.getText() == null) {
-                playerName.setPromptText(playerName.getPromptText() + "!!!");
-            }
-            if (characterSelect.getValue() == null) {
-                characterSelect.setPromptText(characterSelect.getPromptText() + "!!!");
-            }
-
+            playerName.setText("");
+            characterSelect.getSelectionModel().clearSelection();
         }
-        playerName.setText("");
-        characterSelect.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -307,8 +319,8 @@ public class Clue extends Application {
     public void handleGrid() {
         for (int row = 0; row < Grid.getvSize(); row++) {
             for (int col = 0; col < Grid.gethSize(); col++) {
-                Tile tile = clue.getGrid().getTile(new Coordinate(row, col));
-                print(clue.getGrid().getTile(new Coordinate(row, col)));
+                Tile tile = grid.getTile(new Coordinate(row, col));
+                //print(grid.getTile(new Coordinate(row, col)));
                 StackPane viewTile = new ViewTile(tile, new Coordinate(row, col));
                 if (tile.hasPlayer()) {
                     Circle playerView = new ViewPlayer(tile.getPlayer());
@@ -320,14 +332,71 @@ public class Clue extends Application {
                 gridView.add(viewTile, col, row);
             }
         }
+
+        for (Player p : players) {
+            Boolean[] view = new Boolean[9];
+            Arrays.fill(view, true);
+            roomCardState.put(p, view);
+            view = new Boolean[6];
+            Arrays.fill(view, true);
+            characterCardState.put(p, view);
+            view = new Boolean[6];
+            Arrays.fill(view, true);
+            weaponCardState.put(p, view);
+        }
+        drawDetectiveNotes();
+    }
+
+    public void drawDetectiveNotes() {
+
+        //TODO: Draw each detective card and add onClick Functionality
+        int PTR = 0;
+        for (Node n : weaponsDetectiveNotes.getChildren()) {
+            if (n instanceof ImageView) {
+
+            }
+        }
+        PTR = 0;
+        for (Node n : characterDetectiveNotes.getChildren()) {
+            if (n instanceof ImageView) {
+                characterDetectiveNotes.getChildren().remove(n);
+            }
+        }
+        for (Node n : roomsDetectiveNotes.getChildren()) {
+            if (n instanceof ImageView) {
+                roomsDetectiveNotes.getChildren().remove(n);
+            }
+        }
+//        ImageView[] viewCard = detectiveCardState.get(clue.getCurPlayer());
+//        for (int i = 0; i < viewCard.length; i++) {
+//            if (i<9) {
+//                for (int row = 0; row < 2; row++) {
+//                    for (int col = 0; col < 3; col++) {
+//                        weaponsDetectiveNotes.add(viewCard[i], col, row);
+//                    }
+//                }
+//            } else if ((i < 15)) {
+//                for (int row = 0; row < 2; row++) {
+//                    for (int col = 0; col < 3; col++) {
+//                        characterDetectiveNotes.add(viewCard[i], col, row);
+//                    }
+//                }
+//            } else {
+//                for (int row = 0; row < 3; row++) {
+//                    for (int col = 0; col < 3; col++) {
+//                        roomsDetectiveNotes.add(viewCard[i], col, row);
+//                    }
+//                }
+//            }
+//        }
     }
 
     @FXML
     public void handleTest() {
         players = new Player[]{
-                new Player("1", CharacterCard.MISS_SCARLET.toString()), new Player("2", CharacterCard.MRS_PEACOCK.toString()),
-                new Player("3", CharacterCard.COLONEL_MUSTARD.toString()), new Player("4", CharacterCard.MRS_WHITE.toString()),
-                new Player("4", CharacterCard.MR_GREEN.toString()), new Player("6", CharacterCard.PROFESSOR_PLUM.toString())
+                new Player("1", CharacterCard.MISS_SCARLET.toString(), true), new Player("2", CharacterCard.MRS_PEACOCK.toString(), true),
+                new Player("3", CharacterCard.COLONEL_MUSTARD.toString(), true), new Player("4", CharacterCard.MRS_WHITE.toString(), false),
+                new Player("4", CharacterCard.MR_GREEN.toString(), false), new Player("6", CharacterCard.PROFESSOR_PLUM.toString(), false)
         };
         handlePlayerStartButton();
     }
