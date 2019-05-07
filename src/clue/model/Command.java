@@ -32,7 +32,7 @@ public class Command {
     }
 
     // create game
-    Command(CommandWord command, int numPlayer, Player[] players) {
+    public Command(CommandWord command, int numPlayer, Player[] players) {
         super();
         this.command = command;
         this.numPlayer = numPlayer;

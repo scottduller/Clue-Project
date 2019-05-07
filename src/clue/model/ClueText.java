@@ -5,6 +5,7 @@ import clue.model.board.Grid;
 import clue.model.card.*;
 import clue.model.player.Player;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -18,6 +19,7 @@ public class ClueText {
     private Player curPlayer;
     private int curRow, curCol;
     private int curRoll;
+    private ArrayList<Coordinate> moves;
 
     public ClueText(int numPlayer, Player[] players) {
 
@@ -33,12 +35,13 @@ public class ClueText {
         execute(new Command(CommandWord.NEW, numPlayer, players));
     }
 
-    private void execute(Command c) {
+    public void execute(Command c) {
         switch (c.getCommand()) {
             case NEW:
                 grid = new Grid(c.getPlayers(), c.getNumPlayer());
                 this.setNumPlayer(c.getNumPlayer());
                 this.setPlayers(c.getPlayers());
+
                 for (Player p : this.players) {
                     if (p.getCharacter().equals(CharacterCard.MISS_SCARLET)) {
                         this.curPlayer = p;
@@ -47,10 +50,14 @@ public class ClueText {
                 if (this.curPlayer == null) {
                     this.curPlayer = players.peek();
                 }
+                this.setCurCol(this.curPlayer.getCol());
+                this.setCurRow(this.curPlayer.getRow());
                 break;
             case ROLL:
                 Random rand = new Random();
                 this.curRoll = rand.nextInt(6) + 1;
+                this.moves = grid.movePositions(this.curRoll, curRow, curCol);
+                break;
             case TELEPORT:
                 this.setCurPlayer(c.getCurPlayer());
                 this.setCurRow(c.getRow());
@@ -66,11 +73,33 @@ public class ClueText {
             case TURN:
                 this.players.offer(this.players.poll());
                 this.curPlayer = this.players.peek();
+                this.curCol = curPlayer.getCol();
+                this.curRow = curPlayer.getRow();
             case QUIT:
                 break;
             default:
                 System.out.println(c);
         }
+    }
+
+    public static void setGrid(Grid grid) {
+        ClueText.grid = grid;
+    }
+
+    public void setPlayers(Queue<Player> players) {
+        this.players = players;
+    }
+
+    public void setCurRoll(int curRoll) {
+        this.curRoll = curRoll;
+    }
+
+    public ArrayList<Coordinate> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(ArrayList<Coordinate> moves) {
+        this.moves = moves;
     }
 
     public int getCurRoll() {

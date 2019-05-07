@@ -1,6 +1,8 @@
 package clue.view;
 
 import clue.model.ClueText;
+import clue.model.Command;
+import clue.model.CommandWord;
 import clue.model.board.Coordinate;
 import clue.model.board.Grid;
 import clue.model.board.Tile;
@@ -16,13 +18,16 @@ import clue.view.navigation.RootController;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -32,10 +37,7 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class Clue extends Application {
 
@@ -44,6 +46,7 @@ public class Clue extends Application {
     private static Stage primaryStage;
     private static Pane rootLayout;
     private static Player[] players = new Player[6];
+    private ArrayList<Coordinate> curMoves;
     @FXML
     Button b1;
     private Cards cards = new Cards();
@@ -107,7 +110,6 @@ public class Clue extends Application {
     private GridPane roomsDetectiveNotes;
     @FXML
     private GridPane weaponsDetectiveNotes;
-
     private HashMap<Player, Boolean[]> roomCardState = new HashMap<>();
     private HashMap<Player, Boolean[]> weaponCardState = new HashMap<>();
     private HashMap<Player, Boolean[]> characterCardState = new HashMap<>();
@@ -115,6 +117,7 @@ public class Clue extends Application {
     //Test
     @FXML
     private StackPane boardStackPane;
+
 
     public static void fullscreen() {
         if (!primaryStage.isFullScreen()) {
@@ -322,11 +325,12 @@ public class Clue extends Application {
                 Tile tile = grid.getTile(new Coordinate(row, col));
                 //print(grid.getTile(new Coordinate(row, col)));
                 StackPane viewTile = new ViewTile(tile, new Coordinate(row, col));
+                viewTile.setOnMouseClicked(e -> {
+                    print("Initial call" + viewTile);
+                });
+                int r = row, c = 0;
                 if (tile.hasPlayer()) {
                     Circle playerView = new ViewPlayer(tile.getPlayer());
-                    playerView.setOnMouseClicked(e -> {
-                        //TODO:Implement moving
-                    });
                     viewTile.getChildren().add(playerView);
                 }
                 gridView.add(viewTile, col, row);
@@ -343,52 +347,112 @@ public class Clue extends Application {
             view = new Boolean[6];
             Arrays.fill(view, true);
             weaponCardState.put(p, view);
+
+            int PTR = 0;
+            for (Node n : weaponsDetectiveNotes.getChildren()) {
+                if (n instanceof ImageView) {
+                    int i = PTR;
+                    n.setOnMouseClicked(e -> {
+                        if (n.getEffect() == null) {
+                            ColorAdjust colorAdjust = new ColorAdjust();
+                            colorAdjust.setBrightness(-0.75);
+                            n.setEffect(colorAdjust);
+                            detectiveNotesData(0, i, false);
+                        } else {
+                            n.setEffect(null);
+                            detectiveNotesData(0, i, true);
+                        }
+
+                    });
+                    PTR++;
+                }
+            }
+            PTR = 0;
+            for (Node n : characterDetectiveNotes.getChildren()) {
+                if (n instanceof ImageView) {
+                    int i = PTR;
+                    n.setOnMouseClicked(e -> {
+                        if (n.getEffect() == null) {
+                            ColorAdjust colorAdjust = new ColorAdjust();
+                            colorAdjust.setBrightness(-0.75);
+                            n.setEffect(colorAdjust);
+                            detectiveNotesData(1, i, false);
+                        } else {
+                            n.setEffect(null);
+                            detectiveNotesData(1, i, true);
+                        }
+                    });
+                    PTR++;
+                }
+            }
+            PTR = 0;
+            for (Node n : roomsDetectiveNotes.getChildren()) {
+                if (n instanceof ImageView) {
+                    int i = PTR;
+                    n.setOnMouseClicked(e -> {
+                        if (n.getEffect() == null) {
+                            ColorAdjust colorAdjust = new ColorAdjust();
+                            colorAdjust.setBrightness(-0.75);
+                            n.setEffect(colorAdjust);
+                            detectiveNotesData(2, i, false);
+                        } else {
+                            n.setEffect(null);
+                            detectiveNotesData(2, i, true);
+                        }
+                    });
+                    PTR++;
+                }
+            }
         }
-        drawDetectiveNotes();
     }
 
-    public void drawDetectiveNotes() {
+    public void detectiveNotesData(int type, int index, boolean bool) {
+        switch (type) {
+            case 0:
+                Boolean[] states = weaponCardState.remove(clue.getCurPlayer());
+                states[index] = bool;
+                for (int i = 0; i < states.length; i++) {
+                    print(states[i]);
+                }
+                weaponCardState.put(clue.getCurPlayer(), states);
+                break;
+            case 1:
+                states = characterCardState.remove(clue.getCurPlayer());
+                states[index] = bool;
+                for (int i = 0; i < states.length; i++) {
+                    print(states[i]);
+                }
+                characterCardState.put(clue.getCurPlayer(), states);
+                break;
+            case 3:
+                states = roomCardState.remove(clue.getCurPlayer());
+                states[index] = bool;
+                for (int i = 0; i < states.length; i++) {
+                    print(states[i]);
+                }
+                roomCardState.put(clue.getCurPlayer(), states);
+                break;
+        }
+    }
 
-        //TODO: Draw each detective card and add onClick Functionality
-        int PTR = 0;
-        for (Node n : weaponsDetectiveNotes.getChildren()) {
-            if (n instanceof ImageView) {
-
+    public void handleDiceThrow() {
+        clue.execute(new Command(CommandWord.ROLL));
+        curMoves = clue.getMoves();
+        ArrayList<ViewTile> coords = new ArrayList<>();
+        for (Coordinate c : curMoves) {
+            for (Node node : gridView.getChildren()) {
+                if (node instanceof ViewTile && gridView.getRowIndex(node) == c.getRow() && gridView.getColumnIndex(node) == c.getCol()) {
+                    print(node);
+                    node.setOnMouseEntered(e -> {
+                        print("Dice Roll");
+                    });
+                    break;
+                }
             }
         }
-        PTR = 0;
-        for (Node n : characterDetectiveNotes.getChildren()) {
-            if (n instanceof ImageView) {
-                characterDetectiveNotes.getChildren().remove(n);
-            }
+        for (ViewTile v:coords) {
+            print(v);
         }
-        for (Node n : roomsDetectiveNotes.getChildren()) {
-            if (n instanceof ImageView) {
-                roomsDetectiveNotes.getChildren().remove(n);
-            }
-        }
-//        ImageView[] viewCard = detectiveCardState.get(clue.getCurPlayer());
-//        for (int i = 0; i < viewCard.length; i++) {
-//            if (i<9) {
-//                for (int row = 0; row < 2; row++) {
-//                    for (int col = 0; col < 3; col++) {
-//                        weaponsDetectiveNotes.add(viewCard[i], col, row);
-//                    }
-//                }
-//            } else if ((i < 15)) {
-//                for (int row = 0; row < 2; row++) {
-//                    for (int col = 0; col < 3; col++) {
-//                        characterDetectiveNotes.add(viewCard[i], col, row);
-//                    }
-//                }
-//            } else {
-//                for (int row = 0; row < 3; row++) {
-//                    for (int col = 0; col < 3; col++) {
-//                        roomsDetectiveNotes.add(viewCard[i], col, row);
-//                    }
-//                }
-//            }
-//        }
     }
 
     @FXML

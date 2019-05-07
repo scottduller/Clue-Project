@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="playerSelectSplit" dividerPositions="0.5" orientation="VERTICAL"
+           prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #659C65;"
+           xmlns="http://javafx.com/javafx/11.0.1" fx:controller="clue.view.Clue">
+    <items>
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+              prefHeight="212.0" prefWidth="498.0" style="-fx-background-color: #79B079; -fx-border-color: #000000;"
+              SplitPane.resizableWithParent="false">
+            <children>
+                <GridPane hgap="40.0" maxWidth="-Infinity" prefHeight="152.0" prefWidth="398.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label text="How many players:">
+                            <font>
+                                <Font name="Arial Black" size="17.0"/>
+                            </font>
+                        </Label>
+                        <TextField fx:id="playerNo" alignment="CENTER" onKeyPressed="#handlePlayerNoReset"
+                                   promptText="How many players? (2 - 6)" GridPane.columnIndex="1"/>
+                        <Button fx:id="playerNoConfirm" alignment="CENTER" contentDisplay="CENTER" lineSpacing="4.0"
+                                mnemonicParsing="false" onAction="#handlePlayerNoSelect" prefHeight="107.0"
+                                prefWidth="70.0" text="Confirm" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="Arial Black" size="12.0"/>
+                            </font>
+                            <padding>
+                                <Insets bottom="5.0"/>
+                            </padding>
+                            <GridPane.margin>
+                                <Insets/>
+                            </GridPane.margin>
+                        </Button>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                            <children>
+                                <Button fx:id="b1" mnemonicParsing="false" onAction="#handleTest" text="Test"/>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0"/>
+                    </padding>
+                </GridPane>
+                <VBox fx:id="editableSection" alignment="CENTER" prefHeight="220.0" prefWidth="496.0" visible="false">
+                    <children>
+                        <GridPane alignment="CENTER" hgap="30.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                  prefHeight="53.0" prefWidth="398.0">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="262.0" minWidth="10.0"
+                                                   prefWidth="188.0"/>
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="222.0"
+                                                   minWidth="10.0" prefWidth="180.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <Label fx:id="playerNameLabel" prefWidth="398.0" text="Player Name:">
+                                    <font>
+                                        <Font name="Arial Black" size="17.0"/>
+                                    </font>
+                                    <GridPane.margin>
+                                        <Insets/>
+                                    </GridPane.margin>
+                                </Label>
+                                <TextField fx:id="playerName" alignment="CENTER" promptText="Choose a Nickname"
+                                           GridPane.columnIndex="1"/>
+                                <Label fx:id="characherSelectLabel" text="Character:" GridPane.rowIndex="1">
+                                    <font>
+                                        <Font name="Arial Black" size="17.0"/>
+                                    </font>
+                                </Label>
+                                <ComboBox fx:id="characterSelect" editable="true" prefHeight="25.0" prefWidth="205.0"
+                                          promptText="Choose a Character" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="1"/>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="10.0"/>
+                            </VBox.margin>
+                        </GridPane>
+                        <CheckBox fx:id="isComputer" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                                  prefHeight="17.0" prefWidth="153.0" text="Computer Player?">
+                            <font>
+                                <Font name="Arial Black" size="12.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0"/>
+                            </VBox.margin>
+                        </CheckBox>
+                        <StackPane>
+                            <children>
+                                <Button fx:id="addPlayer" mnemonicParsing="false" onAction="#handleAddPlayer"
+                                        text="Add">
+                                    <font>
+                                        <Font name="Arial Black" size="12.0"/>
+                                    </font>
+                                </Button>
+                                <Button fx:id="startGame" mnemonicParsing="false" onAction="#handlePlayerStartButton"
+                                        text="Start" visible="false">
+                                    <font>
+                                        <Font name="Arial Black" size="12.0"/>
+                                    </font>
+                                </Button>
+                            </children>
+                            <opaqueInsets>
+                                <Insets top="10.0"/>
+                            </opaqueInsets>
+                            <padding>
+                                <Insets top="10.0"/>
+                            </padding>
+                        </StackPane>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0"/>
+                    </padding>
+                </VBox>
+            </children>
+        </VBox>
+        <GridPane hgap="10.0" vgap="20.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <children>
+                <StackPane fx:id="scarlettPane" prefHeight="150.0" prefWidth="200.0"
+                           style="-fx-border-color: #ed192d; -fx-border-width: 5;">
+                    <children>
+                        <ImageView fitHeight="200.0" fitWidth="141.0">
+                            <image>
+                                <Image url="@../../image/cards/characters/missscarlettp.png"/>
+                            </image>
+                        </ImageView>
+                        <HBox alignment="TOP_CENTER">
+                            <children>
+                                <Label fx:id="scarlettLabel" alignment="TOP_CENTER" contentDisplay="TOP"
+                                       nodeOrientation="LEFT_TO_RIGHT" textFill="WHITE">
+                                    <HBox.margin>
+                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                    </HBox.margin>
+                                    <font>
+                                        <Font name="Arial Black" size="29.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
+                <StackPane fx:id="mustardPane" prefHeight="150.0" prefWidth="200.0"
+                           style="-fx-border-color: #f1c727; -fx-border-width: 5;" GridPane.columnIndex="1">
+                    <children>
+                        <ImageView fitHeight="200.0" fitWidth="141.0">
+                            <image>
+                                <Image url="@../../image/cards/characters/colmustardp.png"/>
+                            </image>
+                        </ImageView>
+                        <HBox alignment="TOP_CENTER">
+                            <children>
+                                <Label fx:id="mustardLabel" alignment="TOP_CENTER" contentDisplay="TOP"
+                                       nodeOrientation="LEFT_TO_RIGHT" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Black" size="29.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
+                <StackPane fx:id="peacockPane" prefHeight="150.0" prefWidth="200.0"
+                           style="-fx-border-color: #0000FF; -fx-border-width: 5;" GridPane.columnIndex="2">
+                    <children>
+                        <ImageView fitHeight="200.0" fitWidth="141.0">
+                            <image>
+                                <Image url="@../../image/cards/characters/mrspeacockp.png"/>
+                            </image>
+                        </ImageView>
+                        <HBox alignment="TOP_CENTER">
+                            <children>
+                                <Label fx:id="peacockLabel" alignment="TOP_CENTER" contentDisplay="TOP"
+                                       nodeOrientation="LEFT_TO_RIGHT" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Black" size="29.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
+                <StackPane fx:id="plumPane" prefHeight="150.0" prefWidth="200.0"
+                           style="-fx-border-color: #800080; -fx-border-width: 5;" GridPane.rowIndex="1">
+                    <children>
+                        <ImageView fitHeight="200.0" fitWidth="141.0">
+                            <image>
+                                <Image url="@../../image/cards/characters/profplump.png"/>
+                            </image>
+                        </ImageView>
+                        <HBox alignment="TOP_CENTER">
+                            <children>
+                                <Label fx:id="plumLabel" alignment="TOP_CENTER" contentDisplay="TOP"
+                                       nodeOrientation="LEFT_TO_RIGHT" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Black" size="29.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
+                <StackPane fx:id="greenPane" prefHeight="150.0" prefWidth="200.0"
+                           style="-fx-border-color: #006b38; -fx-border-width: 5;" GridPane.columnIndex="1"
+                           GridPane.rowIndex="1">
+                    <children>
+                        <ImageView fitHeight="200.0" fitWidth="141.0">
+                            <image>
+                                <Image url="@../../image/cards/characters/revgreenp.png"/>
+                            </image>
+                        </ImageView>
+                        <HBox alignment="TOP_CENTER">
+                            <children>
+                                <Label fx:id="greenLabel" alignment="TOP_CENTER" contentDisplay="TOP"
+                                       nodeOrientation="LEFT_TO_RIGHT" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Black" size="29.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
+                <StackPane fx:id="whitePane" prefHeight="150.0" prefWidth="200.0"
+                           style="-fx-border-color: #FFFFFF; -fx-border-width: 5;" GridPane.columnIndex="2"
+                           GridPane.rowIndex="1">
+                    <children>
+                        <ImageView fitHeight="200.0" fitWidth="141.0">
+                            <image>
+                                <Image url="@../../image/cards/characters/mrswhitep.png"/>
+                            </image>
+                        </ImageView>
+                        <HBox alignment="TOP_CENTER">
+                            <children>
+                                <Label fx:id="whiteLabel" alignment="TOP_CENTER" contentDisplay="TOP"
+                                       nodeOrientation="LEFT_TO_RIGHT">
+                                    <font>
+                                        <Font name="Arial Black" size="29.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
+            </children>
+        </GridPane>
+    </items>
+</SplitPane>

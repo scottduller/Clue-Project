@@ -101,7 +101,6 @@ public class Grid {
 
     public ArrayList<Coordinate> movePositions(int moves, int row, int col) {
         ArrayList<Coordinate> moveCoordinates = new ArrayList<>();
-        int PTR = 0;
         for (int i = row - moves; i <= row + moves; i++) {
             for (int j = col - moves; j <= col + moves; j++) {
                 Coordinate init = new Coordinate(row, col);
@@ -111,6 +110,7 @@ public class Grid {
                 }
             }
         }
+
         return moveCoordinates;
     }
 
