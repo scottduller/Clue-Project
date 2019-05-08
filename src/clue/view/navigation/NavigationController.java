@@ -1,5 +1,6 @@
 package clue.view.navigation;
 
+import clue.view.viewController.RootController;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;

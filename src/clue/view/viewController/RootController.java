@@ -1,4 +1,4 @@
-package clue.view.navigation;
+package clue.view.viewController;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -8,7 +8,7 @@ public class RootController {
     @FXML
     private StackPane childHolder;
 
-    void setChild(Node node) {
+    public void setChild(Node node) {
         childHolder.getChildren().setAll(node);
     }
 }

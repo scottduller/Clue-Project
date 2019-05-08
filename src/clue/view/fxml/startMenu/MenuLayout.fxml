@@ -8,7 +8,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0"
             prefWidth="1280.0" style="-fx-background-color: #79B079;" AnchorPane.bottomAnchor="0.0"
             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-            xmlns="http://javafx.com/javafx/8" fx:controller="clue.view.Clue">
+            xmlns="http://javafx.com/javafx/8" fx:controller="clue.view.viewController.StartMenuController">
     <children>
         <HBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0">
             <children>
@@ -28,7 +28,7 @@
                         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0"
                               prefWidth="400.0" spacing="10.0">
                             <children>
-                                <Button fx:id="menuStartButton" maxWidth="1.7976931348623157E308"
+                                <Button maxWidth="1.7976931348623157E308"
                                         mnemonicParsing="false" onAction="#handleMenuStartButton" prefHeight="100.0"
                                         text="START" textFill="#224322">
                                     <font>
@@ -41,14 +41,14 @@
                                         <Font name="Arial Black" size="32.0"/>
                                     </font>
                                 </Button>
-                                <Button fx:id="menuSettingsButton" maxWidth="1.7976931348623157E308"
+                                <Button maxWidth="1.7976931348623157E308"
                                         mnemonicParsing="false" onAction="#handleMenuSettingsButton" prefHeight="100.0"
                                         text="SETTINGS" textFill="#224322">
                                     <font>
                                         <Font name="Arial Black" size="32.0"/>
                                     </font>
                                 </Button>
-                                <Button fx:id="menuQuitButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                                         onAction="#handleMenuQuitButton" prefHeight="100.0" text="QUIT"
                                         textFill="#224322">
                                     <font>

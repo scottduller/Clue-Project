@@ -5,10 +5,7 @@ import clue.model.board.Grid;
 import clue.model.card.*;
 import clue.model.player.Player;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
 public class ClueText {
     private static Grid grid;
@@ -82,6 +79,7 @@ public class ClueText {
         }
     }
 
+
     public static void setGrid(Grid grid) {
         ClueText.grid = grid;
     }
@@ -150,14 +148,12 @@ public class ClueText {
         this.numPlayer = numPlayer;
     }
 
-    private Queue<Player> getPlayers() {
+    public Queue<Player> getPlayers() {
         return players;
     }
 
     private void setPlayers(Player[] players) {
         this.players = new LinkedList<>();
-        for (int i = 0; i < players.length; i++) {
-            this.players.add(players[i]);
-        }
+        Collections.addAll(this.players, players);
     }
 }

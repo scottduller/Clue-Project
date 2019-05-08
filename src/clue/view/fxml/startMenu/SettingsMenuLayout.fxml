@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0"
             style="-fx-background-color: #79B079;" xmlns="http://javafx.com/javafx/8"
-            fx:controller="clue.view.Clue">
+            fx:controller="clue.view.viewController.SettingsMenuController">
     <center>
         <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="500.0" spacing="20.0"
               BorderPane.alignment="CENTER">
