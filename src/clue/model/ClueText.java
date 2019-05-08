@@ -10,7 +10,9 @@ import java.util.*;
 public class ClueText {
     private static Grid grid;
     private final Cards cards = new Cards();
-    private final CardType[] murdererCards = {cards.getCharacterCards().get(0), cards.getWeaponCards().get(0), cards.getRoomCards().get(0)};
+    private final CardType[] murdererCards = {cards.removeCharacterCard((CharacterCard) cards.getCharacterCards().get(0)),
+            cards.removeWeaponCard((Weapon) cards.getWeaponCards().get(0)),
+            cards.removeRoomCard((Room) cards.getRoomCards().get(0))};
     private int numPlayer;
     private Queue<Player> players;
     private Player curPlayer;
@@ -19,10 +21,6 @@ public class ClueText {
     private ArrayList<Coordinate> moves;
 
     public ClueText(int numPlayer, Player[] players) {
-
-        cards.removeCharacterCard((CharacterCard) murdererCards[0]);
-        cards.removeWeaponCard((Weapon) murdererCards[1]);
-        cards.removeRoomCard((Room) murdererCards[2]);
         cards.shuffle();
         while (!cards.getCards().isEmpty()) {
             for (Player p : players) {
@@ -40,12 +38,10 @@ public class ClueText {
                 this.setPlayers(c.getPlayers());
 
                 for (Player p : this.players) {
-                    if (p.getCharacter().equals(CharacterCard.MISS_SCARLET)) {
+                    if (p.getPlaying() && p.getCharacter().equals(CharacterCard.MISS_SCARLET)) {
                         this.curPlayer = p;
+                        break;
                     }
-                }
-                if (this.curPlayer == null) {
-                    this.curPlayer = players.peek();
                 }
                 this.setCurCol(this.curPlayer.getCol());
                 this.setCurRow(this.curPlayer.getRow());
@@ -67,11 +63,18 @@ public class ClueText {
                 this.setCurCol(c.getCol());
                 this.getGrid().move(this.getCurPlayer(), new Coordinate(getCurRow(), getCurCol()), this.curRoll);
                 break;
+            case ENTER:
+                break;
             case TURN:
                 this.players.offer(this.players.poll());
                 this.curPlayer = this.players.peek();
+                if(!this.getCurPlayer().getPlaying()) {
+                    execute(new Command(CommandWord.TURN));
+                    break;
+                }
                 this.curCol = curPlayer.getCol();
                 this.curRow = curPlayer.getRow();
+                break;
             case QUIT:
                 break;
             default:

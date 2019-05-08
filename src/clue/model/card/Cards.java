@@ -17,9 +17,9 @@ public class Cards {
     private final ArrayList<CardType> characterCardsUsed = new ArrayList<>();
 
     public Cards() {
-        for (Room r : Room.values()) {
-            cards.add(r);
-            roomCards.add(r);
+        for (int i = 0; i < 9; i++) {
+            cards.add(Room.values()[i]);
+            roomCards.add(Room.values()[i]);
         }
         for (Weapon w : Weapon.values()) {
             cards.add(w);
@@ -29,33 +29,39 @@ public class Cards {
             cards.add(c);
             characterCards.add(c);
         }
+        System.out.print(cards);
+        shuffle();
     }
 
-    public void removeRoomCard(Room r) {
+    public Room removeRoomCard(Room r) {
         if (getCards().contains(r) && getRoomCards().contains(r)) {
             cardsUsed.add(r);
             cards.remove(r);
             roomCardsUsed.add(r);
             roomCards.remove(r);
+
         }
+        return r;
     }
 
-    public void removeWeaponCard(Weapon r) {
+    public Weapon removeWeaponCard(Weapon r) {
         if (getCards().contains(r) && getWeaponCards().contains(r)) {
             cardsUsed.add(r);
             cards.remove(r);
             weaponCardsUsed.add(r);
             weaponCards.remove(r);
         }
+        return r;
     }
 
-    public void removeCharacterCard(CharacterCard r) {
+    public CharacterCard removeCharacterCard(CharacterCard r) {
         if (getCards().contains(r) && getCharacterCards().contains(r)) {
             cardsUsed.add(r);
             cards.remove(r);
             characterCardsUsed.add(r);
             characterCards.remove(r);
         }
+        return r;
     }
 
     public void shuffle() {

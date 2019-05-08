@@ -1,5 +1,7 @@
 package clue.model.board;
 
+import java.util.Objects;
+
 public class Door {
     private Coordinate coordinate;
     private DoorDirection entryDirection;
@@ -28,6 +30,21 @@ public class Door {
     @Override
     public String toString() {
         return entryDirection.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Door door = (Door) o;
+        return Objects.equals(coordinate, door.coordinate) &&
+                entryDirection == door.entryDirection;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(coordinate, entryDirection);
     }
 
     enum DoorDirection {

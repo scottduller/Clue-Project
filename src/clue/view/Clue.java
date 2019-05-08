@@ -11,7 +11,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -28,7 +30,6 @@ public class Clue extends Application {
     private static final StartMenuController startMenuController = new StartMenuController();
 
     private Cards cards = new Cards();
-
 
     private void main(String[] args) {
         launch(args);
@@ -83,7 +84,8 @@ public class Clue extends Application {
             NavigationController.loadPane(PaneSelector.MENU);
 
             Scene scene = new Scene(rootLayout, 1280, 720);
-
+            primaryStage.sizeToScene();
+            primaryStage.resizableProperty().setValue(Boolean.FALSE);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {

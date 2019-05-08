@@ -1,6 +1,7 @@
 package clue.model;
 
 import clue.model.board.Coordinate;
+import clue.model.board.Door;
 import clue.model.player.Player;
 
 public class Command {
@@ -9,6 +10,7 @@ public class Command {
     private clue.model.board.Coordinate coordinate;
     private Player[] players;
     private Player curPlayer = null;
+    private Door curDoor = null;
     private int numPlayer = 0;
     private String message;
 
@@ -29,6 +31,12 @@ public class Command {
         this.command = command;
         this.curPlayer = player;
         this.coordinate = new Coordinate(row, col);
+    }
+
+    public Command(CommandWord command, Door door) {
+        super();
+        this.command = command;
+        this.curDoor = door;
     }
 
     // create game

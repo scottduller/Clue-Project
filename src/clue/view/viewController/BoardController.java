@@ -6,15 +6,20 @@ import clue.model.CommandWord;
 import clue.model.board.Coordinate;
 import clue.model.board.Grid;
 import clue.model.board.Tile;
+import clue.model.card.CardType;
 import clue.model.player.Player;
 import clue.view.Clue;
+import clue.view.board.CardView;
 import clue.view.board.ViewPlayer;
 import clue.view.board.ViewTile;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
@@ -35,18 +40,72 @@ public class BoardController {
     private GridPane roomsDetectiveNotes;
     @FXML
     private GridPane weaponsDetectiveNotes;
+    @FXML
+    private ImageView diceFaceView;
+    @FXML
+    private HBox playerHand;
+    @FXML
+    private Label gameDialog;
+
     private HashMap<Player, Boolean[]> roomCardState = new HashMap<>();
     private HashMap<Player, Boolean[]> weaponCardState = new HashMap<>();
     private HashMap<Player, Boolean[]> characterCardState = new HashMap<>();
-
-    @FXML
-    private StackPane boardStackPane;
+    private ArrayList<CardType> initCurPlayerHand = new ArrayList<>();
+    private ArrayList<CardType> hoverCurPlayerHand = new ArrayList<>();
 
     @FXML
     public void initialize() {
         initBoard();
     }
 
+    public void handleDiceThrow() {
+        clue.execute(new Command(CommandWord.ROLL));
+        switch (clue.getCurRoll()) {
+            case 1:
+                diceFaceView.setImage(new Image("clue/view/image/board/dice/dice1.png"));
+                break;
+            case 2:
+                diceFaceView.setImage(new Image("clue/view/image/board/dice/dice2.png"));
+                break;
+            case 3:
+                diceFaceView.setImage(new Image("clue/view/image/board/dice/dice3.png"));
+                break;
+            case 4:
+                diceFaceView.setImage(new Image("clue/view/image/board/dice/dice4.png"));
+                break;
+            case 5:
+                diceFaceView.setImage(new Image("clue/view/image/board/dice/dice5.png"));
+                break;
+            case 6:
+                diceFaceView.setImage(new Image("clue/view/image/board/dice/dice6.png"));
+                break;
+
+        }
+        curMoves = clue.getMoves();
+        setGameDialog(clue.getCurPlayer().getName() + System.lineSeparator() + "Click a green tile to move there.");
+        movePlayerView();
+    }
+
+    private void movePlayerView() {
+        for (Coordinate c : curMoves) {
+            for (Node node : gridView.getChildren()) {
+                if (node instanceof ViewTile && GridPane.getRowIndex(node) == c.getRow() && GridPane.getColumnIndex(node) == c.getCol()) {
+                    node.setStyle("-fx-background-color: green; -fx-opacity: 0.5;");
+                    node.setOnMouseClicked(e -> {
+                        clue.execute(new Command(CommandWord.MOVE, clue.getCurPlayer(), c.getRow(), c.getCol()));
+                        if (!grid.getTile(clue.getCurPlayer().getCoordinate()).isDoor()){
+                            clue.execute(new Command(CommandWord.TURN));
+                            setGameDialog(clue.getCurPlayer().getName() + System.lineSeparator() + "It is your turn to roll the dice!");
+                        } else {
+
+                        }
+                        updateBoard();
+                    });
+                    break;
+                }
+            }
+        }
+    }
 
     private void initBoard() {
         for (int row = 0; row < Grid.getvSize(); row++) {
@@ -71,6 +130,7 @@ public class BoardController {
             view = new Boolean[6];
             Arrays.fill(view, true);
             weaponCardState.put(p, view);
+
 
             int PTR = 0;
             for (Node n : weaponsDetectiveNotes.getChildren()) {
@@ -128,6 +188,23 @@ public class BoardController {
                 }
             }
         }
+        initCardHand();
+        setGameDialog(clue.getCurPlayer().getName() + System.lineSeparator() + "It is your turn to roll the dice!");
+    }
+
+    private void setGameDialog(String msg) {
+        gameDialog.setText(msg);
+    }
+
+    private void initCardHand() {
+        initCurPlayerHand.clear();
+        initCurPlayerHand.addAll(clue.getCurPlayer().getCardHand());
+        ArrayList<CardView> cardViews = new ArrayList<>();
+        for (CardType c: initCurPlayerHand) {
+            CardView card = new CardView(c);
+            cardViews.add(card);
+        }
+        playerHand.getChildren().setAll(cardViews);
     }
 
     private void updateBoard() {
@@ -208,6 +285,7 @@ public class BoardController {
                 PTR++;
             }
         }
+        initCardHand();
     }
 
     private void detectiveNotesData(int type, int index, boolean bool) {
@@ -236,24 +314,6 @@ public class BoardController {
                 }
                 roomCardState.put(clue.getCurPlayer(), states);
                 break;
-        }
-    }
-
-    public void handleDiceThrow() {
-        clue.execute(new Command(CommandWord.ROLL));
-        curMoves = clue.getMoves();
-        for (Coordinate c : curMoves) {
-            for (Node node : gridView.getChildren()) {
-                if (node instanceof ViewTile && GridPane.getRowIndex(node) == c.getRow() && GridPane.getColumnIndex(node) == c.getCol()) {
-                    node.setStyle("-fx-background-color: green; -fx-opacity: 0.5;");
-                    node.setOnMouseClicked(e -> {
-                        clue.execute(new Command(CommandWord.MOVE, clue.getCurPlayer(), c.getRow(), c.getCol()));
-
-                        updateBoard();
-                    });
-                    break;
-                }
-            }
         }
     }
 
