@@ -64,6 +64,42 @@ public class Tile {
         }
     }
 
+    public void setDoor(boolean door) {
+        isDoor = door;
+    }
+
+    public void setSecret(boolean secret) {
+        isSecret = secret;
+    }
+
+    public boolean isHasPlayer() {
+        return hasPlayer;
+    }
+
+    public void setHasPlayer(boolean hasPlayer) {
+        this.hasPlayer = hasPlayer;
+    }
+
+    public boolean isStart() {
+        return isStart;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public void setDoor(Door door) {
+        this.door = door;
+    }
+
+    public Secret getSecret() {
+        return secret;
+    }
+
+    public void setSecret(Secret secret) {
+        this.secret = secret;
+    }
+
     public Door getDoor() {
         return door;
     }

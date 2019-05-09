@@ -3,9 +3,7 @@ package clue.view.viewController;
 import clue.model.ClueText;
 import clue.model.Command;
 import clue.model.CommandWord;
-import clue.model.board.Coordinate;
-import clue.model.board.Grid;
-import clue.model.board.Tile;
+import clue.model.board.*;
 import clue.model.card.CardType;
 import clue.model.player.Player;
 import clue.view.Clue;
@@ -14,14 +12,15 @@ import clue.view.board.ViewPlayer;
 import clue.view.board.ViewTile;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +45,10 @@ public class BoardController {
     private HBox playerHand;
     @FXML
     private Label gameDialog;
+    @FXML
+    private Button diceThrowButton;
+    @FXML
+    private StackPane boardStackPane;
 
     private HashMap<Player, Boolean[]> roomCardState = new HashMap<>();
     private HashMap<Player, Boolean[]> weaponCardState = new HashMap<>();
@@ -59,6 +62,11 @@ public class BoardController {
     }
 
     public void handleDiceThrow() {
+        if (grid.playable(clue.getCurPlayer().getCoordinate())){
+            clue.model.card.Room room = grid.getTile(clue.getCurPlayer().getCoordinate()).getRoom();
+            Coordinate doorCoordinate = Room.getDOORS().get(room)[0].getCoordinate();
+            clue.execute(new Command(CommandWord.TELEPORT, clue.getCurPlayer(), doorCoordinate.getRow(), doorCoordinate.getCol()));
+        }
         clue.execute(new Command(CommandWord.ROLL));
         switch (clue.getCurRoll()) {
             case 1:
@@ -93,11 +101,11 @@ public class BoardController {
                     node.setStyle("-fx-background-color: green; -fx-opacity: 0.5;");
                     node.setOnMouseClicked(e -> {
                         clue.execute(new Command(CommandWord.MOVE, clue.getCurPlayer(), c.getRow(), c.getCol()));
-                        if (!grid.getTile(clue.getCurPlayer().getCoordinate()).isDoor()){
+                        if (!grid.getTile(clue.getCurPlayer().getCoordinate()).isDoor()) {
                             clue.execute(new Command(CommandWord.TURN));
                             setGameDialog(clue.getCurPlayer().getName() + System.lineSeparator() + "It is your turn to roll the dice!");
                         } else {
-
+                            handleDoorEntered(Room.getSECRETS().containsKey(grid.getTile(clue.getCurPlayer().getCoordinate()).getRoom()));
                         }
                         updateBoard();
                     });
@@ -105,6 +113,55 @@ public class BoardController {
                 }
             }
         }
+    }
+
+    private void handleDoorEntered(boolean hasSecret) {
+        Coordinate[] coordinates  = Room.getRoomPositions().get(grid.getTile(clue.getCurPlayer().getCoordinate()).getRoom());
+        Coordinate roomCoordinate = null;
+        for (int i = 0; i < coordinates.length; i++) {
+            if (!grid.getTile(coordinates[i]).hasPlayer()) {
+                roomCoordinate = coordinates[i];
+                break;
+            }
+        }
+        if (roomCoordinate == null) {
+            throw new IllegalStateException("Too Many Players in Room: " + grid.getTile(clue.getCurPlayer().getCoordinate()).getRoom().toString());
+        }
+        clue.execute(new Command(CommandWord.TELEPORT, clue.getCurPlayer(), roomCoordinate.getRow(), roomCoordinate.getCol()));
+        diceThrowButton.setDisable(true);
+        updateBoard();
+        VBox roomPrompt = new VBox();
+        roomPrompt.setMaxSize(350,350);
+        roomPrompt.setPrefSize(350,350);
+        roomPrompt.setStyle("-fx-border-color: white; -fx-border-width: 5");
+        Button suggestion = new Button("Suggestion");
+        Button accusation = new Button("Accusation");
+        Button trapdoor = new Button("Trapdoor");
+
+        //suggestion.setOnAction();
+        //accusation.setOnAction();
+        trapdoor.setOnAction(e -> {
+            //TODO 1: Figure out why this is null
+            Secret secret = Room.getSECRETS().get(grid.getTile(clue.getCurPlayer().getCoordinate()).getRoom());
+            clue.execute(new Command(CommandWord.TELEPORT, clue.getCurPlayer(), secret.getDestination().getRow(), secret.getDestination().getCol()));
+            clue.execute(new Command(CommandWord.TURN));
+        });
+        if (hasSecret) {
+            gameDialog.setText(clue.getCurPlayer().getName() + System.lineSeparator() +
+                    "Choose Either:" + System.lineSeparator() +
+                    "1) Make A Suggestion." + System.lineSeparator() +
+                    "2) Make An Accusation." + System.lineSeparator() +
+                    "3) Use The Trapdoor.");
+            roomPrompt.getChildren().add(trapdoor);
+
+        } else {
+            gameDialog.setText(clue.getCurPlayer().getName() + System.lineSeparator() +
+                    "Choose Either:" + System.lineSeparator() +
+                    "1) Make A Suggestion." + System.lineSeparator() +
+                    "2) Make An Accusation.");
+        }
+        boardStackPane.getChildren().add(roomPrompt);
+
     }
 
     private void initBoard() {
@@ -200,7 +257,7 @@ public class BoardController {
         initCurPlayerHand.clear();
         initCurPlayerHand.addAll(clue.getCurPlayer().getCardHand());
         ArrayList<CardView> cardViews = new ArrayList<>();
-        for (CardType c: initCurPlayerHand) {
+        for (CardType c : initCurPlayerHand) {
             CardView card = new CardView(c);
             cardViews.add(card);
         }

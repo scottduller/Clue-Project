@@ -37,7 +37,9 @@ public class Grid {
                     if (rooms.getRooms().containsKey(r)) {
                         if (col >= rooms.getRoomTileCoord(r, 0).getCol() && col <= rooms.getRoomTileCoord(r, 1).getCol() &&
                                 row >= rooms.getRoomTileCoord(r, 0).getRow() && row <= rooms.getRoomTileCoord(r, 1).getRow()) {
-                            grid[row][col] = new Tile(row, col, true);
+                            Tile t = new Tile(row, col, true);
+                            t.setRoom(r);
+                            grid[row][col] = t;
                         }
                     }
                     if (rooms.getDoors().containsKey(r)) {
@@ -88,15 +90,13 @@ public class Grid {
     }
 
     public boolean move(Player player, Coordinate coordinate, int moves) {
-        return distance(moves, player.getCoordinate(), coordinate) && teleport(player, coordinate);
+        return playable(coordinate) && distance(moves, player.getCoordinate(), coordinate) && teleport(player, coordinate);
     }
 
     public boolean teleport(Player player, Coordinate coordinate) {
-        if (playable(coordinate)) {
             this.getTile(player.getCoordinate()).setPlayer(null);
+            player.setCoordinate(coordinate);
             return this.getTile(coordinate).setPlayer(player);
-        }
-        return false;
     }
 
     public ArrayList<Coordinate> movePositions(int moves, int row, int col) {
@@ -157,9 +157,16 @@ public class Grid {
                 p.setCoordinate(c);
                 getGrid()[c.getRow()][c.getCol()].setPlayer(p);
             } else {
-                Coordinate c = Room.getNonPlayers().get(clue.model.card.Room.values()[roomPTR]);
-                p.setCoordinate(c);
-                getGrid()[c.getRow()][c.getCol()].setPlayer(p);
+                Coordinate[] coordinates  = Room.getRoomPositions().get(clue.model.card.Room.values()[roomPTR]);
+                Coordinate roomCoordinate = null;
+                for (int i = 0; i < coordinates.length; i++) {
+                    if (!getTile(coordinates[i]).hasPlayer()) {
+                        roomCoordinate = coordinates[i];
+                        break;
+                    }
+                }
+                p.setCoordinate(roomCoordinate);
+                getGrid()[roomCoordinate.getRow()][roomCoordinate.getCol()].setPlayer(p);
                 roomPTR++;
             }
         }

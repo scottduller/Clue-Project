@@ -1,6 +1,6 @@
 package clue.model.board;
 
-class Secret {
+public class Secret {
     private Coordinate location;
     private Coordinate destination;
 
@@ -9,11 +9,11 @@ class Secret {
         this.destination = destination;
     }
 
-    Coordinate getDestination() {
+    public Coordinate getDestination() {
         return destination;
     }
 
-    Coordinate getLocation() {
+    public Coordinate getLocation() {
         return location;
     }
 }

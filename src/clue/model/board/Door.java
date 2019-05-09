@@ -41,6 +41,8 @@ public class Door {
                 entryDirection == door.entryDirection;
     }
 
+
+
     @Override
     public int hashCode() {
 
