@@ -3,7 +3,7 @@ package clue.model.card;
 
 import javafx.scene.paint.Color;
 
-public enum CharacterCard implements CardType {
+public enum CharacterType implements CardType {
     COLONEL_MUSTARD("Colonel Mustard", Color.YELLOW),
     MISS_SCARLET("Miss Scarlet", Color.CRIMSON),
     PROFESSOR_PLUM("Professor Plum", Color.BLUEVIOLET),
@@ -14,7 +14,7 @@ public enum CharacterCard implements CardType {
     private String name;
     private Color colour;
 
-    CharacterCard(String name, Color colour) {
+    CharacterType(String name, Color colour) {
         this.name = name;
         this.colour = colour;
     }

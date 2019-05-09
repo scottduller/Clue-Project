@@ -1,5 +1,9 @@
 package clue.model.board;
 
+/**
+ * This class is used to show a coordinate on the main grid.
+ * This includes a row and a column value
+ */
 public class Coordinate {
     private final int col;
     private final int row;

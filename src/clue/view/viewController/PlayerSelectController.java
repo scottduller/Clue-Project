@@ -1,7 +1,7 @@
 package clue.view.viewController;
 
 import clue.model.ClueText;
-import clue.model.card.CharacterCard;
+import clue.model.card.CharacterType;
 import clue.model.player.Computer;
 import clue.model.player.Player;
 import clue.view.Clue;
@@ -143,9 +143,9 @@ public class PlayerSelectController {
     @FXML
     public void handleTest() {
         players = new Player[]{
-                new Player("1", CharacterCard.MISS_SCARLET.toString(), true), new Player("2", CharacterCard.MRS_PEACOCK.toString(), true),
-                new Player("3", CharacterCard.COLONEL_MUSTARD.toString(), true), new Player("4", CharacterCard.MRS_WHITE.toString(), false),
-                new Player("4", CharacterCard.MR_GREEN.toString(), false), new Player("6", CharacterCard.PROFESSOR_PLUM.toString(), false)
+                new Player("1", CharacterType.MISS_SCARLET.toString(), true), new Player("2", CharacterType.MRS_PEACOCK.toString(), true),
+                new Player("3", CharacterType.COLONEL_MUSTARD.toString(), true), new Player("4", CharacterType.MRS_WHITE.toString(), false),
+                new Player("4", CharacterType.MR_GREEN.toString(), false), new Player("6", CharacterType.PROFESSOR_PLUM.toString(), false)
         };
         handlePlayerStartButton();
     }

@@ -2,6 +2,10 @@ package clue.model.board;
 
 import java.util.Objects;
 
+/**
+ * This class is used to provide the Coordinate of a Door
+ * into a Room and the direction of how you can enter it
+ */
 public class Door {
     private Coordinate coordinate;
     private DoorDirection entryDirection;
@@ -42,13 +46,15 @@ public class Door {
     }
 
 
-
     @Override
     public int hashCode() {
 
         return Objects.hash(coordinate, entryDirection);
     }
 
+    /**
+     * This Enum is used to show directions players can enter a door
+     */
     enum DoorDirection {
         UP("up"), DOWN("down"), LEFT("left"), RIGHT("right");
 

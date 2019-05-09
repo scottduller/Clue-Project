@@ -1,21 +1,19 @@
 package clue.view.board;
 
 import clue.model.card.CardType;
-import clue.model.card.CharacterCard;
-import clue.model.card.Room;
-import clue.model.card.Weapon;
+import clue.model.card.CharacterType;
+import clue.model.card.RoomType;
+import clue.model.card.WeaponType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import static clue.model.card.Weapon.CANDLESTICK;
-
-public class CardView extends ImageView {
+public class ViewCard extends ImageView {
     private final CardType cardType;
 
-    public CardView(CardType cardType) {
+    public ViewCard(CardType cardType) {
         this.cardType = cardType;
-        if (cardType instanceof Room) {
-            switch ((Room)cardType) {
+        if (cardType instanceof RoomType) {
+            switch ((RoomType)cardType) {
                 case STUDY:
                     this.setImage(new Image("clue/view/image/cards/rooms/studyp.png"));
                     break;
@@ -47,8 +45,8 @@ public class CardView extends ImageView {
                     this.setImage(new Image("clue/view/image/cards/rooms/cellarp.png"));
                     break;
             }
-        } else if (cardType instanceof CharacterCard) {
-            switch ((CharacterCard) cardType) {
+        } else if (cardType instanceof CharacterType) {
+            switch ((CharacterType) cardType) {
                 case MISS_SCARLET:
                     this.setImage(new Image("clue/view/image/cards/characters/missscarlettp.png"));
                     break;
@@ -59,7 +57,7 @@ public class CardView extends ImageView {
                     this.setImage(new Image("clue/view/image/cards/characters/mrswhitep.png"));
                     break;
                 case MRS_PEACOCK:
-                    this.setImage(new Image("clue/view/image/cards/characters/missscarlettp.png"));
+                    this.setImage(new Image("clue/view/image/cards/characters/mrspeacockp.png"));
                     break;
                 case PROFESSOR_PLUM:
                     this.setImage(new Image("clue/view/image/cards/characters/profplump.png"));
@@ -69,7 +67,7 @@ public class CardView extends ImageView {
                     break;
             }
         } else {
-            switch ((Weapon) cardType) {
+            switch ((WeaponType) cardType) {
                 case CANDLESTICK:
                     this.setImage(new Image("clue/view/image/cards/weapon/candlestickp.png"));
                     break;

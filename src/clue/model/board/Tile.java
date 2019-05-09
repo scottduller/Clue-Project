@@ -1,6 +1,6 @@
 package clue.model.board;
 
-import clue.model.card.Room;
+import clue.model.card.RoomType;
 import clue.model.player.Player;
 
 public class Tile {
@@ -11,16 +11,16 @@ public class Tile {
     private boolean nullTile = false;
     private boolean isStart = false;
 
-    private clue.model.card.Room room;
+    private RoomType roomType;
     private clue.model.board.Door door;
     private Secret secret;
     private Player player;
 
 
-    Tile(int row, int col, boolean isDoor, boolean isSecret, boolean isStart, clue.model.card.Room room) {
+    Tile(int row, int col, boolean isDoor, boolean isSecret, boolean isStart, RoomType roomType) {
         this.coordinate = new Coordinate(row, col);
         this.isDoor = isDoor;
-        this.room = room;
+        this.roomType = roomType;
         this.hasPlayer = false;
         this.player = null;
         this.isSecret = isSecret;
@@ -33,19 +33,19 @@ public class Tile {
     }
 
     //Secret Tunnel tile
-    Tile(int row, int col, Room room, Secret secret) {
+    Tile(int row, int col, RoomType roomType, Secret secret) {
         this.coordinate = new Coordinate(row, col);
-        this.room = room;
+        this.roomType = roomType;
         this.isSecret = true;
         this.secret = secret;
         this.nullTile = true;
     }
 
     //Door tile
-    Tile(int row, int col, Room room, Door door) {
+    Tile(int row, int col, RoomType roomType, Door door) {
         this.coordinate = new Coordinate(row, col);
         this.isDoor = true;
-        this.room = room;
+        this.roomType = roomType;
         this.door = door;
     }
 
@@ -84,8 +84,8 @@ public class Tile {
         return isStart;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
     }
 
     public void setDoor(Door door) {
@@ -108,8 +108,8 @@ public class Tile {
         isStart = start;
     }
 
-    public clue.model.card.Room getRoom() {
-        return room;
+    public RoomType getRoomType() {
+        return roomType;
     }
 
     public Coordinate getCoordinate() {

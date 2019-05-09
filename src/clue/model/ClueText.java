@@ -10,9 +10,9 @@ import java.util.*;
 public class ClueText {
     private static Grid grid;
     private final Cards cards = new Cards();
-    private final CardType[] murdererCards = {cards.removeCharacterCard((CharacterCard) cards.getCharacterCards().get(0)),
-            cards.removeWeaponCard((Weapon) cards.getWeaponCards().get(0)),
-            cards.removeRoomCard((Room) cards.getRoomCards().get(0))};
+    private final CardType[] murdererCards = {cards.removeCharacterCard((CharacterType) cards.getCharacterCards().get(0)),
+            cards.removeWeaponCard((WeaponType) cards.getWeaponCards().get(0)),
+            cards.removeRoomCard((RoomType) cards.getRoomCards().get(0))};
     private int numPlayer;
     private Queue<Player> players;
     private Player curPlayer;
@@ -27,6 +27,9 @@ public class ClueText {
                 p.addCard(cards.getCards().poll());
             }
         }
+        for (Player p: players) {
+            System.out.println(p.getCardHand());
+        }
         execute(new Command(CommandWord.NEW, numPlayer, players));
     }
 
@@ -38,7 +41,7 @@ public class ClueText {
                 this.setPlayers(c.getPlayers());
 
                 for (Player p : this.players) {
-                    if (p.getPlaying() && p.getCharacter().equals(CharacterCard.MISS_SCARLET)) {
+                    if (p.getPlaying() && p.getCharacter().equals(CharacterType.MISS_SCARLET)) {
                         this.curPlayer = p;
                         break;
                     }

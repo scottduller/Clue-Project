@@ -1,6 +1,6 @@
 package clue.model.card;
 
-public enum Weapon implements CardType {
+public enum WeaponType implements CardType {
     DAGGER("Dagger"),
     CANDLESTICK("Candlestick"),
     REVOLVER("Revolver"),
@@ -10,7 +10,7 @@ public enum Weapon implements CardType {
 
     private String weapon;
 
-    Weapon(String weapon) {
+    WeaponType(String weapon) {
         this.weapon = weapon;
     }
 
@@ -20,7 +20,7 @@ public enum Weapon implements CardType {
 
     @Override
     public String toString() {
-        return "Weapon{" +
+        return "WeaponType{" +
                 "weapon='" + weapon + '\'' +
                 '}';
     }

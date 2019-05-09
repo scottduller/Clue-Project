@@ -1,10 +1,15 @@
 package clue.model.board;
 
+import clue.model.card.RoomType;
 import clue.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * This class is used for the main data of the grid and stores where all
+ * objects are on the board and where players can move and where they can not move
+ */
 public class Grid {
     private static final int V_SIZE = 25;
     private static final int H_SIZE = 24;
@@ -25,7 +30,17 @@ public class Grid {
     private Player[] players;
     private int playerNum;
 
-
+    /**
+     * The constructor is used to initialise the board before the game is started.
+     * it assigns each position in a 2d array with a tile object describing what can be done with that tile and where that tile is
+     * weapons are all assigned a room to start in
+     * players are assigned to starting spots
+     * @param players   an array of Player objects
+     * @param playerNum the number of players in the players array
+     * @see Player
+     * @see Tile
+     * @see clue.model.card.WeaponType
+     */
     public Grid(Player[] players, int playerNum) {
         this.players = players;
         this.playerNum = playerNum;
@@ -33,12 +48,12 @@ public class Grid {
             for (int col = 0; col < H_SIZE; col++) {
                 grid[row][col] = new Tile(row, col, false);
 
-                for (clue.model.card.Room r : clue.model.card.Room.values()) {
+                for (RoomType r : RoomType.values()) {
                     if (rooms.getRooms().containsKey(r)) {
                         if (col >= rooms.getRoomTileCoord(r, 0).getCol() && col <= rooms.getRoomTileCoord(r, 1).getCol() &&
                                 row >= rooms.getRoomTileCoord(r, 0).getRow() && row <= rooms.getRoomTileCoord(r, 1).getRow()) {
                             Tile t = new Tile(row, col, true);
-                            t.setRoom(r);
+                            t.setRoomType(r);
                             grid[row][col] = t;
                         }
                     }
@@ -89,10 +104,28 @@ public class Grid {
         return H_SIZE;
     }
 
+    /**
+     * This method is used to check whether a player can move to a certain tile
+     * if they can the teleport method is called to move the player
+     * @param player        the player to be moved
+     * @param coordinate    the position for the player to be moved to
+     * @param moves         the amount of moves the player can make
+     * @return if player can move to a tile and is teleported return true; else false
+     * @see Player
+     * @see Coordinate
+     */
     public boolean move(Player player, Coordinate coordinate, int moves) {
         return playable(coordinate) && distance(moves, player.getCoordinate(), coordinate) && teleport(player, coordinate);
     }
 
+    /**
+     * This method is used to move a player to a location without constraints of the tiles location
+     * @param player        player to be teleported
+     * @param coordinate    position to be teleported to
+     * @return if player is teleported true; otherwise false
+     * @see Player
+     * @see Coordinate
+     */
     public boolean teleport(Player player, Coordinate coordinate) {
             this.getTile(player.getCoordinate()).setPlayer(null);
             player.setCoordinate(coordinate);
@@ -114,6 +147,14 @@ public class Grid {
         return moveCoordinates;
     }
 
+    /**
+     * This method calculates the manhattan distance between two coordinates and compares it with the amount of moves possible
+     * @param moves number of moves
+     * @param init  initial coordinate
+     * @param fin   final coordinate
+     * @return true if moves >= manhattan distance; otherwise false
+     * @see Coordinate
+     */
     public boolean distance(int moves, Coordinate init, Coordinate fin) {
         if (this.getGrid()[fin.getRow()][fin.getCol()].isDoor()) {
             Door.DoorDirection doorDirection = this.getGrid()[fin.getRow()][fin.getCol()].getDoor().getEntryDirection();
@@ -137,6 +178,12 @@ public class Grid {
         return moves >= Math.abs(fin.getRow() - init.getRow()) + Math.abs(fin.getCol() - init.getCol());
     }
 
+    /**
+     * This method checks a certain card to see if this is a movable tile
+     * @param coordinate    the coordinate to check
+     * @return
+     * @see Coordinate
+     */
     public boolean playable(Coordinate coordinate) {
         return coordinate.getCol() >= 0 && coordinate.getCol() < H_SIZE &&
                 coordinate.getRow() >= 0 && coordinate.getRow() < V_SIZE &&
@@ -144,6 +191,11 @@ public class Grid {
                 !this.getGrid()[coordinate.getRow()][coordinate.getCol()].hasPlayer();
     }
 
+    /**
+     * This method initialises the players of the game to start location
+     * @see Player
+     * @see Coordinate
+     */
     public void initPlayerLoc() {
         ArrayList<Coordinate> starts = new ArrayList<>();
         for (Coordinate c : startSpots) {
@@ -157,7 +209,7 @@ public class Grid {
                 p.setCoordinate(c);
                 getGrid()[c.getRow()][c.getCol()].setPlayer(p);
             } else {
-                Coordinate[] coordinates  = Room.getRoomPositions().get(clue.model.card.Room.values()[roomPTR]);
+                Coordinate[] coordinates  = Room.getRoomPositions().get(RoomType.values()[roomPTR]);
                 Coordinate roomCoordinate = null;
                 for (int i = 0; i < coordinates.length; i++) {
                     if (!getTile(coordinates[i]).hasPlayer()) {

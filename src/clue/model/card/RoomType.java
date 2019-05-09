@@ -1,20 +1,20 @@
 package clue.model.card;
 
-public enum Room implements CardType {
+public enum RoomType implements CardType {
     KITCHEN("Kitchen"),
     CONSERVATORY("Conservatory"),
-    DINING_ROOM("Dining Room"),
+    DINING_ROOM("Dining RoomType"),
     BALLROOM("Ballroom"),
     STUDY("Study"),
     HALL("Hall"),
     LOUNGE("Lounge"),
     LIBRARY("Library"),
-    BILLIARD_ROOM("Billiard Room"),
+    BILLIARD_ROOM("Billiard RoomType"),
     CELLAR("Cellar");
 
     private String name;
 
-    Room(String name) {
+    RoomType(String name) {
         this.name = name;
     }
 
@@ -24,7 +24,7 @@ public enum Room implements CardType {
 
     @Override
     public String toString() {
-        return "Room{" +
+        return "RoomType{" +
                 "name='" + name + '\'' +
                 '}';
     }

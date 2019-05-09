@@ -2,7 +2,7 @@ package clue.model.player;
 
 import clue.model.board.Coordinate;
 import clue.model.card.CardType;
-import clue.model.card.CharacterCard;
+import clue.model.card.CharacterType;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -10,13 +10,13 @@ import java.util.Objects;
 public class Player {
     private final String name;
     private Coordinate coordinate;
-    private CharacterCard character;
+    private CharacterType character;
     private Boolean playing;
     private ArrayList<CardType> cardHand = new ArrayList<>();
 
     public Player(String name, String character, Boolean playing) {
         this.name = name;
-        for (CharacterCard c : CharacterCard.values()) {
+        for (CharacterType c : CharacterType.values()) {
             if (c.toString() == character) {
                 this.character = c;
                 break;
@@ -58,11 +58,11 @@ public class Player {
         return coordinate.getCol();
     }
 
-    public CharacterCard getCharacter() {
+    public CharacterType getCharacter() {
         return character;
     }
 
-    public void setCharacter(CharacterCard character) {
+    public void setCharacter(CharacterType character) {
         this.character = character;
     }
 
