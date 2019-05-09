@@ -7,6 +7,9 @@ import clue.model.card.CharacterType;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * initialises the players with a nickname and a location and what cards are in their hand
+ */
 public class Player {
     private final String name;
     private Coordinate coordinate;

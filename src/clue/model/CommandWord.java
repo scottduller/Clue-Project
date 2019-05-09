@@ -1,5 +1,8 @@
 package clue.model;
 
+/**
+ * CommandWord is an enum that is used to decide which command to execute
+ */
 public enum CommandWord {
     NEW("new"), //Create new game
     ROLL("roll"),

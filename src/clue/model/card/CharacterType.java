@@ -3,6 +3,9 @@ package clue.model.card;
 
 import javafx.scene.paint.Color;
 
+/**
+ * enum that contains the character types
+ */
 public enum CharacterType implements CardType {
     COLONEL_MUSTARD("Colonel Mustard", Color.YELLOW),
     MISS_SCARLET("Miss Scarlet", Color.CRIMSON),

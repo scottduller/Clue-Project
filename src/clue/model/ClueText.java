@@ -7,6 +7,9 @@ import clue.model.player.Player;
 
 import java.util.*;
 
+/**
+ * Class that is the main controller of the model game it executes commands that manipulate the data depending on the command
+ */
 public class ClueText {
     private static Grid grid;
     private final Cards cards = new Cards();

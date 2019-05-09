@@ -7,6 +7,9 @@ import clue.model.card.WeaponType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * This class is used to show a card depending on the CardType
+ */
 public class ViewCard extends ImageView {
     private final CardType cardType;
 

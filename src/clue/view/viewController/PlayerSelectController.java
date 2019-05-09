@@ -11,6 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
+/**
+ * This class is the controller for the playerSelect fxml and controls how the player data is inputted into the model
+ */
 public class PlayerSelectController {
     private static Player[] players = new Player[6];
     @FXML

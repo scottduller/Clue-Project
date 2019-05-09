@@ -8,6 +8,9 @@ import clue.model.board.Tile;
 import clue.view.Clue;
 import javafx.scene.layout.StackPane;
 
+/**
+ * This is a class that describes a tile on a grid and how it looks
+ */
 public class ViewTile extends StackPane {
     private final Tile tile;
     private final Coordinate coordinate;

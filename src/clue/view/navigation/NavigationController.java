@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
+/**
+ * this class navigates between different fxml files to display them on the main stage
+ */
 public class NavigationController {
 
     private static RootController rootController;

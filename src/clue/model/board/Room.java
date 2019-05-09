@@ -8,7 +8,15 @@ import java.util.Random;
 
 import static clue.model.card.RoomType.*;
 
-
+/**
+ * This is a representation of a static class that holds all of the tile coordinate information and how they link to a certain room
+ * @see HashMap
+ * @see RoomType
+ * @see Door
+ * @see Coordinate
+ * @see Secret
+ * @see WeaponType
+ */
 public class Room {
     private static final HashMap<RoomType, Coordinate[]> ROOMS = new HashMap<>();
     private static final HashMap<RoomType, Door[]> DOORS = new HashMap<>();

@@ -9,6 +9,9 @@ import javafx.scene.control.ButtonType;
 
 import java.util.Optional;
 
+/**
+ * A controller class for the start menu where you can choose to play the game exit or go to the settings menu.
+ */
 public class StartMenuController {
     @FXML
     private void handleMenuQuitButton() {

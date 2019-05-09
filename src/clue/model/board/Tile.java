@@ -3,6 +3,9 @@ package clue.model.board;
 import clue.model.card.RoomType;
 import clue.model.player.Player;
 
+/**
+ * This class represents the tiles of the board that players can move and cant move to
+ */
 public class Tile {
     private final Coordinate coordinate;
     private boolean isDoor = false;
@@ -16,7 +19,15 @@ public class Tile {
     private Secret secret;
     private Player player;
 
-
+    /**
+     * Each constructor is used to initialise each tile differently
+     * @param row
+     * @param col
+     * @param isDoor
+     * @param isSecret
+     * @param isStart
+     * @param roomType
+     */
     Tile(int row, int col, boolean isDoor, boolean isSecret, boolean isStart, RoomType roomType) {
         this.coordinate = new Coordinate(row, col);
         this.isDoor = isDoor;

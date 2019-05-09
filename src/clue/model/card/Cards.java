@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * This class contains all of the data of each of the cards and separates them into decks to be shuffled
+ */
 public class Cards {
     private final Queue<CardType> cards = new LinkedList<>();
     private final ArrayList<CardType> roomCards = new ArrayList<>();
@@ -31,7 +34,6 @@ public class Cards {
         }
         shuffle();
     }
-
     public RoomType removeRoomCard(RoomType r) {
         if (getCards().contains(r) && getRoomCards().contains(r)) {
             cardsUsed.add(r);

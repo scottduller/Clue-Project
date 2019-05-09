@@ -14,6 +14,9 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Scale;
 
+/**
+ * This is the controller for the settings fxml file where all widow settings are inputted to change how to window looks
+ */
 public class SettingsMenuController {
     private ClueText clue = Clue.getClue();
     private Grid grid = Clue.getGrid();

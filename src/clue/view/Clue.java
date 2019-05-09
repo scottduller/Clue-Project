@@ -18,6 +18,9 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * This class is the main GUI controller for the grid that controls the main stage and initialises the controllers
+ */
 public class Clue extends Application {
 
     private static ClueText clue;

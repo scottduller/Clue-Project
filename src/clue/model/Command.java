@@ -4,6 +4,9 @@ import clue.model.board.Coordinate;
 import clue.model.board.Door;
 import clue.model.player.Player;
 
+/**
+ * Command that has many constructors that emulate different commands and initialises the data needed for such command
+ */
 public class Command {
 
     private CommandWord command;

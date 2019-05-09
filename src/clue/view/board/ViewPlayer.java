@@ -4,6 +4,9 @@ import clue.model.player.Player;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * This class describes a player tile and how it looks
+ */
 public class ViewPlayer extends Circle {
     Player player;
 

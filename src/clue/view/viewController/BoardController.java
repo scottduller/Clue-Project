@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * This is a controller class for the board fxml file and controls the containers and the controls of the board and how the game is played
+ */
 public class BoardController {
     private ClueText clue = Clue.getClue();
     private Grid grid = Clue.getGrid();

@@ -1,5 +1,8 @@
 package clue.model.card;
 
+/**
+ * enum that contains the types of rooms
+ */
 public enum RoomType implements CardType {
     KITCHEN("Kitchen"),
     CONSERVATORY("Conservatory"),

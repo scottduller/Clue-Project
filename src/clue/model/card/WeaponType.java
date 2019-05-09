@@ -1,5 +1,8 @@
 package clue.model.card;
 
+/**
+ * enum class that contains all of the weapon types
+ */
 public enum WeaponType implements CardType {
     DAGGER("Dagger"),
     CANDLESTICK("Candlestick"),
